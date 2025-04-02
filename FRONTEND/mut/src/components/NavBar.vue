@@ -5,15 +5,15 @@
         <img src="../assets/img/logo.png" class="logo h-10" alt="Logo" />
   
         <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
-          <ul class="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
+          <ul class="flex flex-col mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
             <li>
-              <RouterLink to="/" class="nav-link">
+              <RouterLink to="/despachados" class="nav-link">
                 <i class="fa-solid fa-truck-fast"></i> Registros prontos
               </RouterLink>
             </li>
             <li>
-              <RouterLink to="/index_dp_fiscal" class="nav-link">
-                <i class="fa-solid fa-paper-plane"></i> Registros a preencher
+              <RouterLink to="/configuracoes" class="nav-link">
+                <i class="fa-solid fa-cog"></i> Configurações
               </RouterLink>
             </li>
             <li>
@@ -22,8 +22,8 @@
               </RouterLink>
             </li>
             <li>
-              <RouterLink to="/dashboard" class="nav-link">
-                <i class="fa-solid fa-mug-hot"></i> Para aprovar
+              <RouterLink to="/gestor_registros" class="nav-link">
+                <i class="fa-solid fa-mug-hot"></i> Gestor de Registros
               </RouterLink>
             </li>
           </ul>

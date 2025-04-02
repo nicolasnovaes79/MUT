@@ -3,7 +3,6 @@
     <button 
       :type="type" 
       :class="computedClasses"
-      @click="$emit('click')"
     >
       <slot></slot>
     </button>
@@ -19,11 +18,11 @@
       },
       variant: {
         type: String,
-        default: 'primary' // Padrão é um botão azul
+        default: 'primary'
       },
       size: {
         type: String,
-        default: 'md' // Tamanho padrão médio
+        default: 'md'
       }
     },
     computed: {
