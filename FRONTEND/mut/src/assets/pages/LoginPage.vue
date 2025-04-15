@@ -36,7 +36,7 @@
       <!-- Link para a página de registro -->
       <p class="mt-4 text-sm text-center text-gray-600">
         Ainda não tem uma conta? 
-        <router-link to="/register" class="text-indigo-600 hover:text-indigo-700">
+        <router-link to="/registrar" class="text-indigo-600 hover:text-indigo-700">
           Cadastre-se aqui
         </router-link>
       </p>
@@ -46,9 +46,8 @@
   </div>
 </template>
 
-
 <script>
-import axios from 'axios';
+import AutenticacaoService from '@/services/AutenticacaoService';
 
 export default {
   data() {
@@ -63,19 +62,25 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await axios.post('http://localhost:8080/api/auth/login', this.loginData);
+        const response = await AutenticacaoService.login(this.loginData);
         const token = response.data.token;
-        localStorage.setItem('token', token); // Salva o token para uso posterior
-        this.$router.push('/gestor_registros'); // Redireciona para a página principal após o login
+        const login = this.loginData.login; // pega o valor digitado no campo
+
+        // Armazena no localStorage
+        localStorage.setItem('token', token);
+        localStorage.setItem('login', login);
+
+        this.$router.push('/despachados');
       } catch (error) {
-        this.errorMessage = 'Login inválido!';
-        console.error(error);
+        console.error('Erro ao fazer login:', error);
+        this.errorMessage = 'Login ou senha inválidos!';
       }
     }
+
   }
 };
 </script>
 
 <style scoped>
-/* Estilos adicionais podem ser adicionados aqui */
+
 </style>

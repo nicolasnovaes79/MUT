@@ -3,7 +3,7 @@ package com.projeto.mut.enums;
 public enum EmpresaRole {
 
  CLIENTE("cliente");
- 
+	
  private String role;
  
  EmpresaRole(String role){

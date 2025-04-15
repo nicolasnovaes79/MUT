@@ -150,7 +150,7 @@ public class Empresa implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.role == EmpresaRole.CLIENTE) {
             return List.of(
-                new SimpleGrantedAuthority("ROLE_ADMIN"),
+                new SimpleGrantedAuthority("ROLE_CLIENTE"),
                 new SimpleGrantedAuthority("ROLE_USER")
             );
         } else {
@@ -170,21 +170,21 @@ public class Empresa implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // Você pode customizar depois se quiser tratar conta expirada
+        return true; 
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // Você pode customizar depois se quiser tratar conta bloqueada
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // Você pode customizar depois se quiser tratar credenciais expiradas
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return true; // Você pode customizar depois se quiser tratar usuário desabilitado
+        return true;
     }
 }

@@ -18,5 +18,5 @@ public class EmpresaService implements UserDetailsService {
   public UserDetails loadUserByUsername(String empresaNome) throws UsernameNotFoundException {
 	  return repository.findByLogin(empresaNome);
   }
-
+  
 }

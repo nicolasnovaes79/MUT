@@ -30,6 +30,7 @@ public class FuncionarioController {
         return new ResponseEntity<>(novoFuncionario, HttpStatus.CREATED);
     }
 
+
     @GetMapping
     public ResponseEntity<List<Funcionario>> listarTodos() {
         return ResponseEntity.ok(service.listarTodos());
@@ -43,11 +44,7 @@ public class FuncionarioController {
     }
 
     // Novo endpoint para listar funcionários despachados
-    @GetMapping("/despachados")
-    public ResponseEntity<List<Funcionario>> listarFuncionariosDespachados() {
-        List<Funcionario> funcionariosDespachados = service.listarFuncionariosDespachados();
-        return ResponseEntity.ok(funcionariosDespachados);
-    }
+
     
     @PutMapping("/{id}")
     public ResponseEntity<Funcionario> atualizar(@PathVariable Long id, @RequestBody Funcionario funcionario) {

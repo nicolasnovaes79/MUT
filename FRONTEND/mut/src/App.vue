@@ -1,6 +1,6 @@
 <template>
-  <!-- Componente Navbar reutilizável -->
-  <NavBar />
+  <!-- Verifica se a rota não é a de login para renderizar a NavBar -->
+  <NavBar v-if="!ehLogin" />
 
   <!-- Transição aplicada ao RouterView -->
   <transition name="fade" mode="out-in">
@@ -16,6 +16,12 @@ export default {
   name: "App",
   components: {
     NavBar
+  },
+  computed: {
+    ehLogin() {
+      const ocultar = this.$route.path === '/' || this.$route.path === '/registrar';
+      return ocultar;
+    },
   }
 };
 </script>

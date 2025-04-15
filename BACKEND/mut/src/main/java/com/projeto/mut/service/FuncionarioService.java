@@ -24,9 +24,7 @@ public class FuncionarioService {
     }
 
     // Método para listar funcionários despachados (despachado = true)
-    public List<Funcionario> listarFuncionariosDespachados() {
-        return repository.findByDespachadoTrue();  // Método que filtra os despachados
-    }
+
 
     public Optional<Funcionario> buscarPorId(Long id) {
         return repository.findById(id);

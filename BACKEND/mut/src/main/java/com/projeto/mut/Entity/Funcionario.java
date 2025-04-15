@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,9 +24,13 @@ public class Funcionario {
     private Double salario;
     private LocalDate dataAdmissao;
 
-    // Nova coluna "despachado", iniciada como false
     @Column(nullable = false)
     private boolean despachado = false;
+
+    // Relacionamento com a entidade Empresa
+    @ManyToOne
+    @JoinColumn(name = "empresa_id")  // Nome da coluna que será criada na tabela 'funcionarios'
+    private Empresa empresa;
 
     // Construtor vazio
     public Funcionario() {
@@ -85,5 +91,13 @@ public class Funcionario {
 
     public void setDespachado(boolean despachado) {
         this.despachado = despachado;
+    }
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
     }
 }

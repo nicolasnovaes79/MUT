@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import AutenticacaoService from '@/services/AutenticacaoService';
 
 export default {
   data() {
@@ -140,16 +140,16 @@ export default {
   },
   methods: {
     async registrar() {
-  console.log(this.registerData.nome);  // Adicione esta linha para verificar o valor de nome
-  try {
-    await axios.post('http://localhost:8080/api/auth/registrar', this.registerData);
-    this.$router.push('/'); // Depois de cadastrar, manda pra tela de login
-  } catch (error) {
-    this.errorMessage = 'Erro ao registrar!';
-    console.error(error);
-  }
-}
-
+      try {
+        await AutenticacaoService.registrar(this.registerData);
+        
+        // Após o sucesso do registro, redireciona para a página de login
+        this.$router.push('/');
+      } catch (error) {
+        this.errorMessage = 'Erro ao registrar!';
+        console.error(error);
+      }
+    }
   }
 };
 </script>

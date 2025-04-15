@@ -137,7 +137,25 @@
         Enviar
       </BaseButton>
     </div>
+
+    <!-- Botão para gerar o link do formulário -->
+    <div class="flex justify-center mt-6">
+      <BaseButton
+        type="button"
+        variant="secondary"
+        size="md"
+        @click="gerarLinkFormulario"
+      >
+        Gerar Link do Formulário
+      </BaseButton>
+    </div>
+
+    <!-- Exibição do link gerado -->
+    <div v-if="formLink" class="mt-4 text-center">
+      <p class="text-gray-300">Link do Formulário: <a :href="formLink" target="_blank" class="text-sky-400">{{ formLink }}</a></p>
+    </div>
   </form>
+
   <ModalSucesso
     v-if="showModalSucesso"
     :show="showModalSucesso"
@@ -152,6 +170,8 @@ import BaseButton from "../components/styles/BaseButton.vue";
 import ModalSucesso from "../components/modais/ModalSucesso.vue";
 import FuncionarioService from "../services/FuncionarioService";
 import ConfiguracaoService from "../services/ConfiguracaoService";
+import EmpresaService from "../services/EmpresaService";
+import TokenEmpresaService from "../services/TokenEmpresaService";
 
 export default {
   name: "FormCompartilhavel",
@@ -170,7 +190,9 @@ export default {
         ativo: true,
       },
       showModalSucesso: false,
+      idEmpresa: null,
       configuracao: {}, // Armazenar as configurações
+      formLink: null, // Armazenar o link gerado
     };
   },
   created() {
@@ -217,6 +239,43 @@ export default {
     voltarSection() {
       if (this.section > 1) this.section--;
     },
+    async getIdEmpresa() {
+      const login = localStorage.getItem('login');
+        if (!login) {
+          console.error("Login não encontrado no localStorage");
+          return;
+        }
+
+        try {
+          // Passando o login para o serviço
+          const response = await EmpresaService.getIdPorLogin(login);
+          this.idEmpresa = response.data;
+        } catch (error) {
+          console.error("Erro ao obter ID da empresa:", error);
+        }
+      },
+    // Método para gerar o link do formulário
+    async gerarLinkFormulario() {
+      try {
+        await this.getIdEmpresa();
+
+        if (!this.idEmpresa) {
+          console.error("ID da empresa não encontrado.");
+          return;
+        }
+
+        const response = await TokenEmpresaService.gerarToken(this.idEmpresa);
+
+        if (!response.token) {
+          throw new Error("Token não encontrado na resposta.");
+        }
+
+        this.formLink = `${window.location.origin}/formulario/${response.token}`;
+      } catch (error) {
+        console.error("Erro ao gerar o link:", error);
+      }
+    }
+
   },
 };
 </script>
