@@ -46,9 +46,11 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/auth/registrar").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/configuracoes").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/empresas").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/empresas").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/token-empresa").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/funcionarios").hasRole("CLIENTE")
-                .requestMatchers(HttpMethod.GET, "/api/funcionarios").hasRole("CLIENTE")
+                .requestMatchers(HttpMethod.GET, "/api/token-empresa").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/funcionarios").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/funcionarios").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

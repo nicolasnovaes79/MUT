@@ -139,7 +139,7 @@
     </div>
 
     <!-- Botão para gerar o link do formulário -->
-    <div class="flex justify-center mt-6">
+    <div class="flex justify-center mt-6" v-if="!token">
       <BaseButton
         type="button"
         variant="secondary"
@@ -152,8 +152,17 @@
 
     <!-- Exibição do link gerado -->
     <div v-if="formLink" class="mt-4 text-center">
-      <p class="text-gray-300">Link do Formulário: <a :href="formLink" target="_blank" class="text-sky-400">{{ formLink }}</a></p>
+      <p class="text-gray-300">Link do Formulário: 
+        <a 
+          :href="formLink" 
+          target="_blank" 
+          class="text-sky-400 hover:text-sky-500 font-medium text-sm transition-all duration-200"
+        >
+          Clique para compartilhar o formulário
+        </a>
+      </p>
     </div>
+
   </form>
 
   <ModalSucesso
@@ -188,15 +197,18 @@ export default {
         salario: null,
         dataAdmissao: "",
         ativo: true,
+        empresa: {},
       },
       showModalSucesso: false,
       idEmpresa: null,
       configuracao: {}, // Armazenar as configurações
       formLink: null, // Armazenar o link gerado
+      token: null,
     };
   },
   created() {
     this.carregarConfiguracoes();
+    this.consultarToken();
   },
   methods: {
     // Carregar as configurações do backend
@@ -223,7 +235,11 @@ export default {
     },
     async submitForm() {
       try {
-        const response = await FuncionarioService.salvar(this.formData);
+        const payload = {
+          ...this.formData,
+        };
+
+        const response = await FuncionarioService.salvar(payload);
         console.log("Funcionário registrado com sucesso:", response.data);
         this.showModalSucesso = true;
       } catch (error) {
@@ -239,7 +255,20 @@ export default {
     voltarSection() {
       if (this.section > 1) this.section--;
     },
-    async getIdEmpresa() {
+    // Método para consultar a empresa pelo ID
+    async consultarEmpresaPorId(id) {
+      try {
+        const response = await EmpresaService.getPorId(id);
+        const empresa = response.data;
+
+        // Atualizando os dados da empresa no formData
+        this.formData.empresa = empresa;
+        console.log("Dados da empresa:", empresa);
+      } catch (error) {
+        console.error("Erro ao consultar os dados da empresa:", error);
+      }
+    },
+    async getIdEmpresaPorLogin() {
       const login = localStorage.getItem('login');
         if (!login) {
           console.error("Login não encontrado no localStorage");
@@ -250,33 +279,53 @@ export default {
           // Passando o login para o serviço
           const response = await EmpresaService.getIdPorLogin(login);
           this.idEmpresa = response.data;
+          this.formData.empresa = this.idEmpresa;
+
+          // Após obter o ID, consultar os dados completos da empresa
+          await this.consultarEmpresaPorId(this.idEmpresa);
         } catch (error) {
           console.error("Erro ao obter ID da empresa:", error);
         }
       },
-    // Método para gerar o link do formulário
+    // Método para gerar (ou reutilizar) o link do formulário
     async gerarLinkFormulario() {
       try {
-        await this.getIdEmpresa();
+        await this.getIdEmpresaPorLogin();
 
-        if (!this.idEmpresa) {
-          console.error("ID da empresa não encontrado.");
-          return;
+        let token;
+
+        if (this.token) {
+          token = this.token;
+        } else {
+          const novoTokenResponse = await TokenEmpresaService.gerarToken(this.idEmpresa);
+          token = novoTokenResponse.token;
+          this.token = token; // Armazena para uso futuro, se quiser
         }
 
-        const response = await TokenEmpresaService.gerarToken(this.idEmpresa);
+        this.formLink = `${window.location.origin}/formulario/${token}/${this.idEmpresa}`;
 
-        if (!response.token) {
-          throw new Error("Token não encontrado na resposta.");
-        }
-
-        this.formLink = `${window.location.origin}/formulario/${response.token}`;
       } catch (error) {
-        console.error("Erro ao gerar o link:", error);
+        console.error("Erro ao gerar ou recuperar o link:", error);
+      }
+    },
+    async consultarToken() {
+      try {
+        await this.getIdEmpresaPorLogin();
+
+        const tokenResponse = await TokenEmpresaService.consultarTokenPorEmpresa(this.idEmpresa);
+
+        if (tokenResponse && tokenResponse.token) {
+          this.token = tokenResponse.token;
+          this.formLink = `${window.location.origin}/formulario/${this.token}/${this.idEmpresa}`;
+        } else {
+          this.token = null;
+          this.formLink = null;
+        }
+      } catch (error) {
+        console.error("Erro ao consultar token:", error);
       }
     }
-
-  },
+ }
 };
 </script>
 

@@ -1,5 +1,6 @@
 package com.projeto.mut.repository;
 
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,5 +16,9 @@ public interface TokenEmpresaRepository extends JpaRepository<TokenEmpresa, Long
 
     // Buscar um token válido (não expirado e não utilizado)
     Optional<TokenEmpresa> findByTokenAndUtilizadoFalse(String token);
-}
 
+    // Buscar o token mais recente, válido e não utilizado por empresa
+    Optional<TokenEmpresa> findTopByEmpresaIdAndUtilizadoFalseAndDataExpiracaoAfterOrderByDataCriacaoDesc(
+        Long empresaId, OffsetDateTime dataAtual
+    );
+}

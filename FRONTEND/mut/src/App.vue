@@ -1,6 +1,6 @@
 <template>
-  <!-- Verifica se a rota não é a de login para renderizar a NavBar -->
-  <NavBar v-if="!ehLogin" />
+  <!-- Verifica se a rota não é a de login ou a do formulário compartilhável -->
+  <NavBar v-if="!ehLogin && !ehFormularioCompartilhavel" />
 
   <!-- Transição aplicada ao RouterView -->
   <transition name="fade" mode="out-in">
@@ -22,6 +22,10 @@ export default {
       const ocultar = this.$route.path === '/' || this.$route.path === '/registrar';
       return ocultar;
     },
+    ehFormularioCompartilhavel() {
+      // Verifica se a rota contém "formulario" e um token (exemplo: /formulario/:token)
+      return this.$route.path.startsWith('/formulario/');
+    }
   }
 };
 </script>

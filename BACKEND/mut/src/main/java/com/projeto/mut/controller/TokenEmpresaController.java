@@ -42,4 +42,17 @@ public class TokenEmpresaController {
         return tokenOptional.map(ResponseEntity::ok)
                             .orElse(ResponseEntity.notFound().build());
     }
+    
+ // Novo endpoint: buscar token válido por empresa
+    @GetMapping("/consultar/{empresaId}")
+    public ResponseEntity<TokenEmpresaDTO> buscarTokenValidoPorEmpresa(@PathVariable Long empresaId) {
+        TokenEmpresaDTO tokenDTO = tokenEmpresaService.buscarTokenValidoPorEmpresa(empresaId);
+
+        if (tokenDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(tokenDTO);
+    }
+
 }

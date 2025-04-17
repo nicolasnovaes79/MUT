@@ -29,5 +29,14 @@ export default {
         console.error("Erro ao buscar token: ", error);
         throw error;
       });
+  },
+
+  consultarTokenPorEmpresa(empresaId) {
+    return http.get(`/token-empresa/consultar/${empresaId}`)
+      .then(response => response.data)
+      .catch(error => {
+        console.error("Erro ao consultar token por empresa: ", error);
+        throw error;
+      });
   }
 };

@@ -73,4 +73,22 @@ public class TokenEmpresaService {
             tokenEmpresaRepository.save(tokenEmpresa);
         });
     }
+    
+ // Novo método para buscar um token válido por empresa
+    public TokenEmpresaDTO buscarTokenValidoPorEmpresa(Long empresaId) {
+        Optional<TokenEmpresa> tokenOptional = tokenEmpresaRepository.findTopByEmpresaIdAndUtilizadoFalseAndDataExpiracaoAfterOrderByDataCriacaoDesc(empresaId, OffsetDateTime.now());
+
+        if (tokenOptional.isEmpty()) {
+            return null;
+        }
+
+        TokenEmpresa tokenEmpresa = tokenOptional.get();
+
+        return new TokenEmpresaDTO(
+            tokenEmpresa.getToken(),
+            tokenEmpresa.getDataExpiracao(),
+            tokenEmpresa.getUtilizado()
+        );
+    }
+
 }

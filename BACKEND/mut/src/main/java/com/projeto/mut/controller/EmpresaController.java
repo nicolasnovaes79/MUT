@@ -28,4 +28,15 @@ public class EmpresaController {
             return ResponseEntity.notFound().build();
         }
     }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<Empresa> getEmpresaPorId(@PathVariable Long id) {
+        Empresa empresa = empresaService.buscarPorId(id);
+        if (empresa != null) {
+            return ResponseEntity.ok(empresa);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
