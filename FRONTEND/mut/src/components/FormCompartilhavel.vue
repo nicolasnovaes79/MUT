@@ -3,10 +3,10 @@
     class="max-w-md mx-auto mt-8 p-6 bg-gray-800 rounded-lg shadow-lg"
     @submit.prevent="submitForm"
   >
-    <img
-      src="../assets/img/GIU AMA 255-08.png"
+    <img style="height: 12vh; width: 12vh; border-radius: 100%;"
+      src="../assets/img/mUT (2).png"
       alt="Imagem decorativa"
-      class="mx-auto mb-4 w-16 h-auto"
+      class="mx-auto mb-4"
     />
 
     <h1 class="mb-6 text-4xl font-bold text-center text-sky-400">

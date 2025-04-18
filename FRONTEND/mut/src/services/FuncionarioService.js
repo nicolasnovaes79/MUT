@@ -19,5 +19,6 @@ export default {
 
   excluir(id) {
     return http.delete(`/funcionarios/${id}`);
-  }
+  },
+
 };
