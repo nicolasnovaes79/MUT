@@ -19,7 +19,6 @@ public class ConfiguracaoController {
     @Autowired
     private ConfiguracaoService configuracaoService;
 
-    // Método para recuperar a configuração
     @GetMapping
     public ResponseEntity<Configuracao> getConfiguracao() {
         try {
@@ -31,7 +30,6 @@ public class ConfiguracaoController {
         }
     }
 
-    // Método para salvar a configuração
     @PostMapping
     public ResponseEntity<Configuracao> salvarConfiguracao(@RequestBody Configuracao configuracao) {
         try {

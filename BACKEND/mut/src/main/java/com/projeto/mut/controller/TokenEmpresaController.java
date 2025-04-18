@@ -28,14 +28,12 @@ public class TokenEmpresaController {
         return ResponseEntity.ok(tokenGerado);
     }
 
-    // Endpoint para validar um token (ex: verificar se é válido, não expirado, etc)
     @GetMapping("/validar/{token}")
     public ResponseEntity<Boolean> validarToken(@PathVariable String token) {
         boolean valido = tokenEmpresaService.validarToken(token);
         return ResponseEntity.ok(valido);
     }
 
-    // Endpoint opcional para buscar os dados completos de um token
     @GetMapping("/{token}")
     public ResponseEntity<TokenEmpresa> buscarPorToken(@PathVariable String token) {
         Optional<TokenEmpresa> tokenOptional = tokenEmpresaRepository.findByToken(token);
@@ -43,7 +41,6 @@ public class TokenEmpresaController {
                             .orElse(ResponseEntity.notFound().build());
     }
     
- // Novo endpoint: buscar token válido por empresa
     @GetMapping("/consultar/{empresaId}")
     public ResponseEntity<TokenEmpresaDTO> buscarTokenValidoPorEmpresa(@PathVariable Long empresaId) {
         TokenEmpresaDTO tokenDTO = tokenEmpresaService.buscarTokenValidoPorEmpresa(empresaId);

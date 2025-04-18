@@ -47,10 +47,10 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/configuracoes").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/empresas").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/empresas").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/token-empresa").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/token-empresa").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/funcionarios").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/funcionarios").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/token-empresa/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/token-empresa/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/funcionarios/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/funcionarios/**").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
@@ -62,10 +62,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(Arrays.asList("http://localhost:8081")); // frontend
+        config.setAllowedOrigins(Arrays.asList("http://localhost:8081"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("*"));
-        config.setAllowCredentials(true); // permite envio de cookies, headers, etc
+        config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

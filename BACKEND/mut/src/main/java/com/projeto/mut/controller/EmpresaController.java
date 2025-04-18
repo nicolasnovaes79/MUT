@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.mut.Entity.Empresa;
+import com.projeto.mut.dto.EmpresaDTO;
 import com.projeto.mut.service.EmpresaService;
 
 @RestController
@@ -20,23 +21,23 @@ public class EmpresaController {
 
     @GetMapping("/{login}/id")
     public ResponseEntity<Long> getIdEmpresaPorLogin(@PathVariable String login) {
-        // Usando o serviço para buscar a empresa
-        UserDetails empresa = empresaService.loadUserByUsername(login);
-        if (empresa != null) {
-            return ResponseEntity.ok(((Empresa) empresa).getId());  // Casting para Empresa
+        UserDetails userDetails = empresaService.loadUserByUsername(login);
+        if (userDetails != null && userDetails instanceof Empresa) {
+            return ResponseEntity.ok(((Empresa) userDetails).getId());
         } else {
             return ResponseEntity.notFound().build();
         }
     }
     
+ 
     @GetMapping("/{id}")
-    public ResponseEntity<Empresa> getEmpresaPorId(@PathVariable Long id) {
+    public ResponseEntity<EmpresaDTO> getEmpresaPorId(@PathVariable Long id) {
         Empresa empresa = empresaService.buscarPorId(id);
         if (empresa != null) {
-            return ResponseEntity.ok(empresa);
+            EmpresaDTO dto = empresaService.converterParaDTO(empresa);
+            return ResponseEntity.ok(dto);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

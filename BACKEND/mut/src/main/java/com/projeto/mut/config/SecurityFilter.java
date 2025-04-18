@@ -27,23 +27,28 @@ public class SecurityFilter extends OncePerRequestFilter{
 	EmpresaRepository empresaRepository;
 	
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+	        throws ServletException, IOException {
+	    String uri = request.getRequestURI();
+	    
 	    var token = this.recoverToken(request);
+	    
 	    if (token != null) {
 	        var login = tokenService.validarToken(token);
-
+	  
 	        if (login != null) {
 	            UserDetails user = empresaRepository.findByLogin(login);
 	            if (user != null) {
 	                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 	                SecurityContextHolder.getContext().setAuthentication(authentication);
 	            }
-
 	        }
+	    } else {
+	        System.out.println("Nenhum token informado.");
 	    }
-
 	    filterChain.doFilter(request, response);
 	}
+
 
 
 	private String recoverToken(HttpServletRequest request) {

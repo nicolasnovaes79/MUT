@@ -7,28 +7,42 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.projeto.mut.Entity.Empresa;
+import com.projeto.mut.dto.EmpresaDTO;
 import com.projeto.mut.repository.EmpresaRepository;
 
 @Service
 public class EmpresaService implements UserDetailsService {
 
     @Autowired
-    EmpresaRepository repository;
-
+    private EmpresaRepository repository;
+    
     @Override
     public UserDetails loadUserByUsername(String empresaNome) throws UsernameNotFoundException {
-        Empresa empresa = repository.findByLogin(empresaNome);
+        Empresa empresa = (Empresa) repository.findByLogin(empresaNome);
         if (empresa == null) {
-            throw new UsernameNotFoundException("Empresa não encontrada com login: " + empresaNome);
+            throw new UsernameNotFoundException("Empresa não encontrada: " + empresaNome);
         }
-        return empresa; // Empresa implementa UserDetails
+        return empresa;
     }
-
+    
     public Empresa buscarPorId(Long id) {
         return repository.findById(id).orElse(null);
     }
-
-    public Empresa buscarPorLogin(String login) {
-        return repository.findByLogin(login);
+    
+    // Método para converter uma entidade Empresa para EmpresaDTO
+    public EmpresaDTO converterParaDTO(Empresa empresa) {
+        if (empresa == null) {
+            return null;
+        }
+        return new EmpresaDTO(
+            empresa.getId(),
+            empresa.getNome(),
+            empresa.getCnpj(),
+            empresa.getEndereco(),
+            empresa.getTelefone(),
+            empresa.getEmail(),
+            empresa.getLogin(),
+            empresa.getDataCriacao()
+        );
     }
 }

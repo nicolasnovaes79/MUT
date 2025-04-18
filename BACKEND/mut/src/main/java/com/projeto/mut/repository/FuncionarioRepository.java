@@ -6,5 +6,8 @@ import java.util.List;
 
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
     List<Funcionario> findByEmpresaId(Long empresaId);
+    
+    List<Funcionario> findByEmpresaIdAndDespachadoTrue(Long empresaId);
+
 }
 
