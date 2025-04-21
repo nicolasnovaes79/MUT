@@ -50,6 +50,7 @@ export default {
         if (response.data) {
           this.camposConfiguraveis = response.data;
         }
+        console.log(response.data)
       } catch (error) {
         console.error("Erro ao carregar configurações:", error);
       }

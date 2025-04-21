@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Configuracao {
@@ -19,7 +21,11 @@ public class Configuracao {
  private boolean cargo;
  private boolean salario;
  private boolean dataAdmissao;
- private boolean ativo;
+private boolean ativo;
+ // Relacionamento com a entidade Empresa
+ @ManyToOne
+ @JoinColumn(name = "empresa_id")  // Nome da coluna que será criada na tabela 'funcionarios'
+ private Empresa empresa;
 
  public Long getId() {
 	return id;
@@ -74,6 +80,12 @@ public boolean isAtivo() {
 }
 public void setAtivo(boolean ativo) {
 	this.ativo = ativo;
+}
+public Empresa getEmpresa() {
+	return empresa;
+}
+public void setEmpresa(Empresa empresa) {
+	this.empresa = empresa;
 }
  // Getters e Setters
 }
